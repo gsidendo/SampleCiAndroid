@@ -23,7 +23,7 @@ def FIND_BUGS_FILE_NM = 'findbugs-filter.xml'
 task checkstyle(type: Checkstyle) {
     def conf
     if (project.hasProperty('checkStyleConfigFile')) {
-        conf = file(checkStyleConfigFile)
+        conf = file(project.rootDir + checkStyleConfigFile)
     } else {
         conf = File.createTempFile("checkstyle", "")
         new URL("https://raw.githubusercontent.com/$GIT_USER/gradle-android-ci-check/$CI_VERSION/config/checkstyle/$CHECK_STYLE_FILE_NM")
