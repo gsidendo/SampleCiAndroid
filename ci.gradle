@@ -1,0 +1,184 @@
+/*
+ * for ci
+ */
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+
+build.dependsOn 'findbugs'
+check.dependsOn 'checkstyle', 'findbugs', 'pmd', 'cpd'
+
+def GIT_USER = 'gsidendo'
+def CI_VERSION = '1.1.0'
+def CHECK_STYLE_FILE_NM = 'CheckStyle.xml'
+def FIND_BUGS_FILE_NM = 'findbugs-filter.xml'
+
+// checkStyle(CI 用)設定
+/**
+ * checkStyle実行方法
+ * $./gradlew checkstyle
+ * 成果物:{project.rootDir}/build/reports/checkstyle/checkstyle.xml
+ *
+ */
+task checkstyle(type: Checkstyle) {
+    def conf
+    if (project.hasProperty('checkStyleConfigFile')) {
+        conf = file(checkStyleConfigFile)
+    } else {
+        conf = File.createTempFile("checkstyle", "")
+        new URL("https://raw.githubusercontent.com/$GIT_USER/gradle-android-ci-check/$CI_VERSION/config/checkstyle/$CHECK_STYLE_FILE_NM")
+                .withInputStream{ i -> conf.withOutputStream{ it << i }}
+    }
+    configFile conf
+    source 'src/main'
+    include '**/*.java'
+    exclude '**/build/**'
+
+    classpath = files()
+    ignoreFailures = true
+}
+
+//task checkstyle(type: Checkstyle) {
+//    configFile file("${project.rootDir}/config/checkstyle/CheckStyle.xml")
+//    source 'src/main'
+//    include '**/*.java'
+//    reports {
+//        xml {
+//            destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
+//        }
+//    }
+//    classpath = files()
+//}
+checkstyle {
+    toolVersion = "6.10.1"
+}
+
+/**
+ * FindBugsの実行方法
+ * $./gradlew findbugs
+ *
+ * htmlで出力する場合、日本語が文字化けするので
+ * findbugsタスク実行後findbugsConvertSJisタスクを実行する
+ * $./gradlew findbugsConvertSJis
+ *
+ */
+def findBugsDestXml = "${project.rootDir}/build/reports/findbugs/findbugs_report.xml"
+def findBugsDestHtml = "${project.rootDir}/build/reports/findbugs/findbugs_report.html"
+task findbugs(type: FindBugs, dependsOn: assembleDebug) {
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "low"
+
+    def conf
+    if (project.hasProperty('findBugsExcludeFilter')) {
+        conf = file(findBugsExcludeFilter)
+    } else {
+        conf = File.createTempFile("findbugs", "")
+        new URL("https://raw.githubusercontent.com/$GIT_USER/gradle-android-ci-check/$CI_VERSION/config/findbugs/$FIND_BUGS_FILE_NM")
+                .withInputStream{ i -> conf.withOutputStream{ it << i }}
+    }
+    excludeFilter = conf
+    classes = files("$project.buildDir/intermediates/classes/")
+
+    source 'src/main/java'
+
+    reports {
+        xml.enabled = false // true: xml出力 false:html出力
+        xml.withMessages = true
+        html.enabled = !xml.isEnabled()
+        xml.destination findBugsDestXml
+        html.destination findBugsDestHtml
+    }
+
+    classpath = files()
+}
+
+task findbugsConvertSJis << {
+    def filename = findBugsDestHtml
+    def file = new File(filename)
+    def text = file.getText()
+    text = text.replaceAll(/<head>/, "<head>\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>")
+
+    def fw=new File(filename).newWriter()
+    fw.writeLine(text)
+    fw.close()
+}
+
+// jacoco 関連
+/**
+ * 実行方法：以下のコマンドを実行
+ * ./gradlew :androidcore:jacoco
+ * jacocoレポート生成箇所：${project.rootDir}/build/reports/jacoco/${project.name}
+ *
+ */
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+task jacoco(type: JacocoReport, dependsOn: "testDebug") {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "${project.rootDir}/build/reports/jacoco/${project.name}"
+        }
+    }
+    classDirectories = fileTree(
+            dir: './build/intermediates/classes/debug',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/BuildConfig.class',
+            ])
+    sourceDirectories = files('src/main/java')
+    executionData = files('build/jacoco/testDebug.exec')
+}
+
+
+
+
+
+//task pmd(type: Pmd) {
+//    ignoreFailures = true
+//
+//    def conf
+//    if (project.hasProperty('pmdRuleSetFiles')) {
+//        conf = file(pmdRuleSetFiles)
+//    } else {
+//        conf = File.createTempFile("pmd", "")
+//        new URL("https://raw.githubusercontent.com/$GIT_USER/gradle-android-ci-check/$CI_VERSION/config/pmd/pmd-ruleset.xml")
+//                .withInputStream{ i -> conf.withOutputStream{ it << i }}
+//    }
+//    ruleSetFiles = files(conf)
+//    ruleSets = []
+//
+//    source 'src'
+//    include '**/*.java'
+//    exclude '**/gen/**'
+//
+//    reports {
+//        xml.enabled = true
+//        html.enabled = true
+//        xml {
+//            destination "$project.buildDir/reports/pmd/pmd.xml"
+//        }
+//        html {
+//            destination "$project.buildDir/reports/pmd/pmd.html"
+//        }
+//    }
+//}
+//
+//task cpd << {
+//    File outDir = new File("$project.buildDir/reports/pmd/")
+//    outDir.mkdirs()
+//    ant.taskdef(name: 'cpd',
+//            classname: 'net.sourceforge.pmd.cpd.CPDTask',
+//            classpath: configurations.pmd.asPath)
+//    ant.cpd(minimumTokenCount: '100',
+//            format: 'xml',
+//            outputFile: new File(outDir , 'cpd.xml')) {
+//        fileset(dir: "src/main/java") {
+//            include(name: '**/*.java')
+//        }
+//    }
+//}

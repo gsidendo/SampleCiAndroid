@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
-
+apply from: "https://raw.githubusercontent.com/gsidendo/SampleCiAndroid/init/ci.gradle"
 
 android {
     compileSdkVersion 22
@@ -29,100 +29,100 @@ dependencies {
 }
 
 
-// jacoco 関連
-/**
- * 実行方法：以下のコマンドを実行
- * ./gradlew :androidcore:jacoco
- * jacocoレポート生成箇所：${project.rootDir}/build/reports/jacoco/${project.name}
- *
- */
-jacoco {
-    toolVersion = "0.7.5.201505241946"
-    reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
-task jacoco(type: JacocoReport, dependsOn: "testDebug") {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        html {
-            destination "${project.rootDir}/build/reports/jacoco/${project.name}"
-        }
-    }
-    classDirectories = fileTree(
-            dir: './build/intermediates/classes/debug',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/BuildConfig.class',
-            ])
-    sourceDirectories = files('src/main/java')
-    executionData = files('build/jacoco/testDebug.exec')
-}
-
-// checkStyle(CI 用)設定
-/**
- * checkStyle実行方法
- * $./gradlew checkstyle
- * 成果物:{project.rootDir}/build/reports/checkstyle/checkstyle.xml
- *
- */
-task checkstyle(type: Checkstyle) {
-    configFile file("${project.rootDir}/config/checkstyle/CheckStyle.xml")
-    source 'src/main'
-    include '**/*.java'
-    reports {
-        xml {
-            destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
-        }
-    }
-    classpath = files()
-}
-checkstyle {
-    toolVersion = "6.10.1"
-}
-
-check.dependsOn 'checkstyle'
-
-
-
-def findBugsDestXml = "${project.rootDir}/build/reports/findbugs/findbugs_report.xml"
-def findBugsDestHtml = "${project.rootDir}/build/reports/findbugs/findbugs_report.html"
-/**
- * FindBugsの実行方法
- * $./gradlew findbugs
- *
- * htmlで出力する場合、日本語が文字化けするので
- * findbugsタスク実行後findbugsConvertSJisタスクを実行する
- * $./gradlew findbugsConvertSJis
- *
- */
-task findbugs(type: FindBugs) {
-    ignoreFailures = true
-    effort = "max"
-    reportLevel = "low" // ＊どのレベルの報告まで対応するかで変更＊
-    classes = files("build/intermediates/classes/")
-    excludeFilter = new File("${project.rootDir}/config/findbugs/findbugs_filter.xml")
-    source = fileTree('src/main/java')
-    classpath = files()
-    reports {
-        xml.enabled = false // true: xml出力 false:html出力
-        xml.withMessages = true
-        html.enabled = !xml.isEnabled()
-        xml.destination findBugsDestXml
-        html.destination findBugsDestHtml
-    }
-}
-
-build.dependsOn findbugs
-check.dependsOn findbugs
-
-task findbugsConvertSJis << {
-    def filename = findBugsDestHtml
-    def file = new File(filename)
-    def text = file.getText()
-    text = text.replaceAll(/<head>/, "<head>\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>")
-
-    def fw=new File(filename).newWriter()
-    fw.writeLine(text)
-    fw.close()
-}
+//// jacoco 関連
+///**
+// * 実行方法：以下のコマンドを実行
+// * ./gradlew :androidcore:jacoco
+// * jacocoレポート生成箇所：${project.rootDir}/build/reports/jacoco/${project.name}
+// *
+// */
+//jacoco {
+//    toolVersion = "0.7.5.201505241946"
+//    reportsDir = file("$buildDir/customJacocoReportDir")
+//}
+//
+//task jacoco(type: JacocoReport, dependsOn: "testDebug") {
+//    reports {
+//        xml.enabled = false
+//        html.enabled = true
+//        html {
+//            destination "${project.rootDir}/build/reports/jacoco/${project.name}"
+//        }
+//    }
+//    classDirectories = fileTree(
+//            dir: './build/intermediates/classes/debug',
+//            excludes: ['**/R.class',
+//                       '**/R$*.class',
+//                       '**/BuildConfig.class',
+//            ])
+//    sourceDirectories = files('src/main/java')
+//    executionData = files('build/jacoco/testDebug.exec')
+//}
+//
+//// checkStyle(CI 用)設定
+///**
+// * checkStyle実行方法
+// * $./gradlew checkstyle
+// * 成果物:{project.rootDir}/build/reports/checkstyle/checkstyle.xml
+// *
+// */
+//task checkstyle(type: Checkstyle) {
+//    configFile file("${project.rootDir}/config/checkstyle/CheckStyle.xml")
+//    source 'src/main'
+//    include '**/*.java'
+//    reports {
+//        xml {
+//            destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
+//        }
+//    }
+//    classpath = files()
+//}
+//checkstyle {
+//    toolVersion = "6.10.1"
+//}
+//
+//check.dependsOn 'checkstyle'
+//
+//
+//
+//def findBugsDestXml = "${project.rootDir}/build/reports/findbugs/findbugs_report.xml"
+//def findBugsDestHtml = "${project.rootDir}/build/reports/findbugs/findbugs_report.html"
+///**
+// * FindBugsの実行方法
+// * $./gradlew findbugs
+// *
+// * htmlで出力する場合、日本語が文字化けするので
+// * findbugsタスク実行後findbugsConvertSJisタスクを実行する
+// * $./gradlew findbugsConvertSJis
+// *
+// */
+//task findbugs(type: FindBugs) {
+//    ignoreFailures = true
+//    effort = "max"
+//    reportLevel = "low" // ＊どのレベルの報告まで対応するかで変更＊
+//    classes = files("build/intermediates/classes/")
+//    excludeFilter = new File("${project.rootDir}/config/findbugs/findbugs_filter.xml")
+//    source = fileTree('src/main/java')
+//    classpath = files()
+//    reports {
+//        xml.enabled = false // true: xml出力 false:html出力
+//        xml.withMessages = true
+//        html.enabled = !xml.isEnabled()
+//        xml.destination findBugsDestXml
+//        html.destination findBugsDestHtml
+//    }
+//}
+//
+//build.dependsOn findbugs
+//check.dependsOn findbugs
+//
+//task findbugsConvertSJis << {
+//    def filename = findBugsDestHtml
+//    def file = new File(filename)
+//    def text = file.getText()
+//    text = text.replaceAll(/<head>/, "<head>\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>")
+//
+//    def fw=new File(filename).newWriter()
+//    fw.writeLine(text)
+//    fw.close()
+//}
