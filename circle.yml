@@ -16,4 +16,4 @@ test:
     - chmod +x gradlew
     - ./gradlew assemble test
   post:
-      - cp -R build/reports/* $CIRCLE_ARTIFACTS
+      - cp -R ~/build/reports/* $CIRCLE_ARTIFACTS
