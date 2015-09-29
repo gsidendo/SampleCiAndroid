@@ -18,4 +18,4 @@ test:
     - chmod +x gradlew
     - ./gradlew jacoco
   post:
-      - cp -R SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
+      - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
