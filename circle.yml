@@ -1,3 +1,2 @@
 $ cd $GOPATH/github.com/gsidendo/init
 $ git checkout branch_x
-$ go install
