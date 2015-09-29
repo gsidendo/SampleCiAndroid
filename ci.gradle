@@ -154,3 +154,55 @@ task findbugsConvertSJis << {
 //        }
 //    }
 //}
+// jacoco 関連
+/**
+ * 実行方法：以下のコマンドを実行
+ * ./gradlew :androidcore:jacoco
+ * jacocoレポート生成箇所：${project.rootDir}/build/reports/jacoco/${project.name}
+ *
+ */
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+//    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+def dependTask = "testDebugUnitTest"
+task jacoco(type: JacocoReport, dependsOn: dependTask) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "${project.rootDir}/build/reports/jacoco/${project.name}"
+        }
+    }
+    classDirectories = fileTree(
+            dir: './build/intermediates/classes/debug',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/BuildConfig.class',
+            ])
+    sourceDirectories = files('src/main/java')
+    // .execファイルはdepends
+    executionData = files("build/jacoco/${dependTask}.exec")
+}
+
+/*参考資料
+:app:androidDependencies
+ debug
+ \--- com.android.support:appcompat-v7:22.2.1
+ \--- com.android.support:support-v4:22.2.1
+ \--- LOCAL: internal_impl-22.2.1.jar
+
+ debugAndroidTest
+ No dependencies
+
+ debugUnitTest
+ No dependencies
+
+ release
+ \--- com.android.support:appcompat-v7:22.2.1
+ \--- com.android.support:support-v4:22.2.1
+ \--- LOCAL: internal_impl-22.2.1.jar
+
+ releaseUnitTest
+ No dependencies
+ */
