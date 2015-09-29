@@ -6,9 +6,7 @@ apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'jacoco'
 
-testDebugUnitTest.dependsOn 'jacoco'
-build.dependsOn 'check'
-check.dependsOn 'checkstyle', 'findbugs'
+check.dependsOn 'checkstyle', 'findbugs', 'jacoco'
 
 def GIT_USER = 'gsidendo'
 def CI_VERSION = '1.1.0'

@@ -16,6 +16,6 @@ machine:
 test:
   override:
     - chmod +x gradlew
-    - ./gradlew assemble test
+    - ./gradlew check
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
