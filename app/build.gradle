@@ -6,7 +6,7 @@ apply from: "https://raw.githubusercontent.com/gsidendo/SampleCiAndroid/init/ci.
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "com.gsidendo.sample"
