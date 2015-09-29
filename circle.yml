@@ -1,3 +1,5 @@
 test:
+  override:
+    - gradle check jacocoTestReport
   post:
-    - cp -r build/reports/* $CIRCLE_TEST_REPORTS/
+    - cp -R build/reports/* $CIRCLE_ARTIFACTS
