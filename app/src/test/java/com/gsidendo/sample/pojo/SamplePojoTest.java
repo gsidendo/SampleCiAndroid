@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 /**
- * Created by gsidendo on 2015/09/29.
+ * @author gsidendo
  */
 public class SamplePojoTest {
 
@@ -17,7 +17,7 @@ public class SamplePojoTest {
         String expected = "hoge";
 
         pojo.setField(expected);
-        
+
         assertThat(pojo.getField(), is(expected));
     }
 }
