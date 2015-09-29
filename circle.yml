@@ -5,11 +5,13 @@ general:
       - develop # list of branches to build
       - init # list of branches to build
   artifacts:
-     - "/build/reports"
+     - /home/ubuntu/SampleCiAndroid/build/reports
 
 machine:
   environment:
     ANDROID_HOME: /usr/local/android-sdk-linux
+
+
 
 test:
   override:
