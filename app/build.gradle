@@ -136,3 +136,32 @@ dependencies {
 //    fw.writeLine(text)
 //    fw.close()
 //}
+// jacoco 関連
+/**
+ * 実行方法：以下のコマンドを実行
+ * ./gradlew :androidcore:jacoco
+ * jacocoレポート生成箇所：${project.rootDir}/build/reports/jacoco/${project.name}
+ *
+ */
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+task jacoco(type: JacocoReport, dependsOn: "testDebug") {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "${project.rootDir}/build/reports/jacoco/${project.name}"
+        }
+    }
+    classDirectories = fileTree(
+            dir: './build/intermediates/classes/debug',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/BuildConfig.class',
+            ])
+    sourceDirectories = files('src/main/java')
+    executionData = files('build/jacoco/testDebug.exec')
+}
