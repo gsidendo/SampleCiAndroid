@@ -10,9 +10,10 @@ general:
 machine:
   environment:
     ANDROID_HOME: /usr/local/android-sdk-linux
-  test:
-    override:
-      - chmod +x gradlew
-      - ./gradlew assemble test
-    post:
+
+test:
+  override:
+    - chmod +x gradlew
+    - ./gradlew assemble test
+  post:
       - cp -R build/reports/* $CIRCLE_ARTIFACTS
