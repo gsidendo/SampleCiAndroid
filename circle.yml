@@ -1,5 +1,24 @@
-test:
-  override:
-    - gradle check jacocoTestReport
-  post:
-    - cp -R build/reports/* $CIRCLE_ARTIFACTS
+general:
+  branches:
+    only:
+      - master # list of branches to build
+      - develop # list of branches to build
+      - init # list of branches to build
+  general:
+    artifacts:
+      - "~/build/reports" # relative to the user's home directory
+
+machine:
+  environment:
+    ANDROID_HOME: /usr/local/android-sdk-linux
+  dependencies:
+    cache_directories:
+      - ~/.android
+      - ~/android
+    override: - bash install-dependencies.sh
+  test:
+    override:
+      - chmod +x gradlew
+      - ./gradlew assemble test
+    post:
+      - cp -R build/reports/* $CIRCLE_ARTIFACTS
