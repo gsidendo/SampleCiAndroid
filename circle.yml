@@ -4,9 +4,8 @@ general:
       - master # list of branches to build
       - develop # list of branches to build
       - init # list of branches to build
-  general:
-    artifacts:
-      - "~/build/reports" # relative to the user's home directory
+  artifacts:
+     - "~/build/reports" # relative to the user's home directory
 
 machine:
   environment:
