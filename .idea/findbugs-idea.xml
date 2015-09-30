@@ -12,7 +12,7 @@
     </option>
     <option name="_basePreferences">
       <map>
-        <entry key="property.analysisEffortLevel" value="default" />
+        <entry key="property.analysisEffortLevel" value="max" />
         <entry key="property.analyzeAfterAutoMake" value="false" />
         <entry key="property.analyzeAfterCompile" value="false" />
         <entry key="property.annotationGutterIconEnabled" value="true" />
@@ -212,6 +212,11 @@
         <entry key="SECURITY" value="true" />
         <entry key="STYLE" value="true" />
       </map>
+    </option>
+    <option name="_enabledBundledPluginIds">
+      <set>
+        <option value="jp.f.dev.findbugs.detect.android" />
+      </set>
     </option>
     <option name="_annotationTypeSettings">
       <map>
