@@ -22,6 +22,11 @@ android {
             testCoverageEnabled = true
         }
     }
+    lintOptions {
+        abortOnError false
+        absolutePaths false
+        lintConfig file("${project.rootDir}/config/lint/lint.xml")
+    }
 }
 
 dependencies {

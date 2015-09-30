@@ -6,7 +6,8 @@ apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'jacoco'
 
-check.dependsOn 'checkstyle', 'findbugs', 'jacoco'
+check.dependsOn 'checkstyle', 'findbugs', 'jacoco', 'lint'
+
 
 def GIT_USER = 'gsidendo'
 def PROJECT_NM = 'SampleCiAndroid'
