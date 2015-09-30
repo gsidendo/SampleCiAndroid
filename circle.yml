@@ -16,7 +16,7 @@ machine:
 test:
   override:
     - chmod +x gradlew
-    - ./gradlew jacoco checkstyle findbugs
+    - ./gradlew check
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
       - cp -R /home/ubuntu/SampleCiAndroid/app/build/outputs/lint-results.html $CIRCLE_ARTIFACTS/lint
