@@ -41,11 +41,9 @@ task checkstyle(type: Checkstyle) {
     ignoreFailures = true
 
     reports {
-        xml.enabled = false // true: xml出力 false:html出力
-        html.enabled = true
-
-        xml.destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
-        html.destination "${project.rootDir}/build/reports/checkstyle/checkstyle.html"
+        xml {
+            destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
+        }
     }
 }
 
