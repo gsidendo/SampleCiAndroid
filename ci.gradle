@@ -62,8 +62,8 @@ checkstyle {
  * $./gradlew findbugsConvertSJis
  *
  */
-def findBugsDestXml = "${project.rootDir}/build/reports/findbugs/findbugs_report.xml"
-def findBugsDestHtml = "${project.rootDir}/build/reports/findbugs/findbugs_report.html"
+def findBugsDestXml = "${project.rootDir}/build/reports/findbugs/findbugs-report.xml"
+def findBugsDestHtml = "${project.rootDir}/build/reports/findbugs/findbugs-report.html"
 task findbugs(type: FindBugs, dependsOn: assembleDebug) {
     ignoreFailures = true
     effort = "max"
