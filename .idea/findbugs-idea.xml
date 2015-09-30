@@ -69,6 +69,7 @@
         <entry key="ExplicitSerialization" value="true" />
         <entry key="FieldItemSummary" value="true" />
         <entry key="FinalizerNullsFields" value="true" />
+        <entry key="FindAndroidStream" value="true" />
         <entry key="FindBadCast2" value="true" />
         <entry key="FindBadForLoop" value="true" />
         <entry key="FindBugsSummaryStats" value="true" />
