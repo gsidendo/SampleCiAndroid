@@ -23,6 +23,7 @@ def RESOURCE_ROOT_PATH = "\"https://raw.githubusercontent.com/$GIT_USER/$PROJECT
  * 成果物:{project.rootDir}/build/reports/checkstyle/checkstyle.xml
  *
  */
+def checkstyleReportXml = "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
 task checkstyle(type: Checkstyle) {
     def conf
     if (project.hasProperty('checkStyleConfigFile')) {
@@ -42,7 +43,7 @@ task checkstyle(type: Checkstyle) {
 
     reports {
         xml {
-            destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
+            destination checkstyleReportXml
         }
     }
 }
@@ -102,8 +103,14 @@ task findbugsConvertSJis << {
     fw.close()
 }
 
-
-
+task checkstyleReport << {
+    if (file(checkstyleReportXml).exists()) {
+        ant.xslt(in: checkstyleReportXml,
+                style:"${project.rootDir}/config/checkstyle/checkstyle-report-format.xsl",
+                out:"${project.rootDir}/build/reports/checkstyle/checkstyle_report.html"
+        )
+    }
+}
 
 
 

@@ -15,6 +15,6 @@ machine:
 test:
   override:
     - chmod +x gradlew
-    - ./gradlew check findbugsConvertSJis
+    - ./gradlew check findbugsConvertSJis checkstyleReport
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
