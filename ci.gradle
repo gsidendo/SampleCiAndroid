@@ -47,17 +47,6 @@ task checkstyle(type: Checkstyle) {
     }
 }
 
-//task checkstyle(type: Checkstyle) {
-//    configFile file("${project.rootDir}/config/checkstyle/CheckStyle.xml")
-//    source 'src/main'
-//    include '**/*.java'
-//    reports {
-//        xml {
-//            destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
-//        }
-//    }
-//    classpath = files()
-//}
 checkstyle {
     toolVersion = "6.10.1"
 }
@@ -92,7 +81,7 @@ task findbugs(type: FindBugs, dependsOn: assembleDebug) {
     source 'src/main/java'
 
     reports {
-        xml.enabled = true // true: xml出力 false:html出力
+        xml.enabled = false // true: xml出力 false:html出力
         xml.withMessages = true
         html.enabled = !xml.isEnabled()
         xml.destination findBugsDestXml

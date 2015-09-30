@@ -4,8 +4,6 @@ general:
       - master # list of branches to build
       - develop # list of branches to build
       - init # list of branches to build
-#  artifacts:
-#     - /home/ubuntu/SampleCiAndroid/build/reports
 
 machine:
   environment:
@@ -16,6 +14,6 @@ machine:
 test:
   override:
     - chmod +x gradlew
-    - ./gradlew check
+    - ./gradlew check findbugsConvertSJis
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
