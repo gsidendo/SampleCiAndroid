@@ -19,4 +19,4 @@ test:
     - ./gradlew check
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
-      - cp -R /home/ubuntu/SampleCiAndroid/app/build/outputs/lint/* $CIRCLE_ARTIFACTS/lint
+      - cp -R /home/ubuntu/SampleCiAndroid/app/build/outputs/* $CIRCLE_ARTIFACTS
