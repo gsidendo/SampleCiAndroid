@@ -9,9 +9,11 @@ apply plugin: 'jacoco'
 check.dependsOn 'checkstyle', 'findbugs', 'jacoco'
 
 def GIT_USER = 'gsidendo'
-def CI_VERSION = '1.1.0'
+def PROJECT_NM = 'SampleCiAndroid'
+def CI_VERSION = 'init'
 def CHECK_STYLE_FILE_NM = 'CheckStyle.xml'
 def FIND_BUGS_FILE_NM = 'findbugs-filter.xml'
+def RESOURCE_ROOT_PATH = "\"https://raw.githubusercontent.com/$GIT_USER/$PROJECT_NM/$CI_VERSION"
 
 // checkStyle(CI 用)設定
 /**
@@ -26,7 +28,7 @@ task checkstyle(type: Checkstyle) {
         conf = file("${project.rootDir}/config/checkstyle/CheckStyle.xml")
     } else {
         conf = File.createTempFile("checkstyle", "")
-        new URL("https://raw.githubusercontent.com/$GIT_USER/gradle-android-ci-check/$CI_VERSION/config/checkstyle/$CHECK_STYLE_FILE_NM")
+        new URL("$RESOURCE_ROOT_PATH/config/checkstyle/$CHECK_STYLE_FILE_NM")
                 .withInputStream{ i -> conf.withOutputStream{ it << i }}
     }
     configFile conf
@@ -36,6 +38,12 @@ task checkstyle(type: Checkstyle) {
 
     classpath = files()
     ignoreFailures = true
+
+    reports {
+        xml {
+            destination "${project.rootDir}/build/reports/checkstyle/checkstyle.xml"
+        }
+    }
 }
 
 //task checkstyle(type: Checkstyle) {
@@ -74,7 +82,7 @@ task findbugs(type: FindBugs, dependsOn: assembleDebug) {
         conf = file(findBugsExcludeFilter)
     } else {
         conf = File.createTempFile("findbugs", "")
-        new URL("https://raw.githubusercontent.com/$GIT_USER/gradle-android-ci-check/$CI_VERSION/config/findbugs/$FIND_BUGS_FILE_NM")
+        new URL("$RESOURCE_ROOT_PATH/config/findbugs/$FIND_BUGS_FILE_NM")
                 .withInputStream{ i -> conf.withOutputStream{ it << i }}
     }
     excludeFilter = conf
@@ -83,7 +91,7 @@ task findbugs(type: FindBugs, dependsOn: assembleDebug) {
     source 'src/main/java'
 
     reports {
-        xml.enabled = false // true: xml出力 false:html出力
+        xml.enabled = true // true: xml出力 false:html出力
         xml.withMessages = true
         html.enabled = !xml.isEnabled()
         xml.destination findBugsDestXml
