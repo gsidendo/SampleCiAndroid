@@ -23,8 +23,16 @@ android {
         }
     }
     lintOptions {
-        abortOnError false
+        abortOnError true
         absolutePaths false
+        // if true, generate an XML report for use by for example Jenkins
+        xmlReport false
+        // file to write report to (if not specified, defaults to lint-results.xml)
+        xmlOutput file("lint/lint-report.xml")
+        // if true, generate an HTML report (with issue explanations, sourcecode, etc)
+        htmlReport true
+        // optional path to report (default will be lint-results.html in the builddir)
+        htmlOutput file("lint/lint-report.html")
         lintConfig file("${project.rootDir}/config/lint/lint.xml")
     }
 }
