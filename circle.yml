@@ -7,7 +7,7 @@ general:
 
 machine:
   environment:
-    ANDROID_HOME: /usr/local/android-sdk-linux
+#    ANDROID_HOME: /usr/local/android-sdk-linux
     JAVA_OPTS: "-Xmx1048m -XX:MaxPermSize=512m -Duser.language=ja -Duser.country=JP"
   timezone: Asia/Tokyo
 
@@ -16,7 +16,8 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter "platform-tools,tools"
     - echo y | android update sdk --no-ui --filter "android-23,build-tools-23.0.1"
   override:
-    - ./gradlew dependencies
+     - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+
 
 
 test:
