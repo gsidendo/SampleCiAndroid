@@ -4,6 +4,8 @@ general:
       - master # list of branches to build
       - develop # list of branches to build
       - init # list of branches to build
+  artifacts:
+      - "app/build/outputs/apk/*"
 
 machine:
   environment:
@@ -37,5 +39,3 @@ deployment:
     branch: init
     commands:
       - ./gradlew assembleRelease
-    post:
-      - cp -R /home/ubuntu/SampleCiAndroid/app/build/outputs/apk/* $CIRCLE_ARTIFACTS/apk
