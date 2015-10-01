@@ -28,7 +28,7 @@ test:
     - ./gradlew clean check findbugsConvertSJis checkstyleReport
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
-      - rm app/build/outputs/apk/
+#      - rm -rf /home/ubuntu/SampleCiAndroid/app/build/outputs/apk/*
 
 deployment:
   master:
