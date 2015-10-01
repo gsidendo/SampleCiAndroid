@@ -34,5 +34,6 @@ deployment:
       - ./gradlew assembleRelease
 #      - ./gradlew uploadDeployGateRelease
   init:
+    branch: init
     commands:
       - ./gradlew assembleRelease
