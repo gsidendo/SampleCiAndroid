@@ -26,3 +26,10 @@ test:
     - ./gradlew check findbugsConvertSJis checkstyleReport
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
+
+deployment:
+  master:
+    branch: release/1_0_0
+    commands:
+      - ./gradlew assembleRelease
+#      - ./gradlew uploadDeployGateRelease
