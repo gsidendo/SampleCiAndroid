@@ -28,14 +28,16 @@ test:
     - ./gradlew check findbugsConvertSJis checkstyleReport
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
+      - rm app/build/outputs/apk/
 
 deployment:
   master:
     branch: release/1_0_0
     commands:
+      - rm -rf app/build/outputs/apk/
       - ./gradlew assembleRelease
-#      - ./gradlew uploadDeployGateRelease
   init:
     branch: init
     commands:
+      - rm -rf /home/ubuntu/SampleCiAndroid/app/build/outputs/apk/*
       - ./gradlew assembleRelease
