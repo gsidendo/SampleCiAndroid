@@ -25,7 +25,7 @@ dependencies:
 test:
   override:
     - chmod +x gradlew
-    - ./gradlew check findbugsConvertSJis checkstyleReport
+    - ./gradlew clean check findbugsConvertSJis checkstyleReport
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
       - rm app/build/outputs/apk/
@@ -39,5 +39,4 @@ deployment:
   init:
     branch: init
     commands:
-      - rm -rf /home/ubuntu/SampleCiAndroid/app/build/outputs/apk/*
       - ./gradlew assembleRelease
