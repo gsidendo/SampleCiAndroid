@@ -14,7 +14,7 @@ machine:
   timezone: Asia/Tokyo
 
 dependencies:
-  pre:
+  override:
     - echo y | android update sdk --no-ui --all --filter "platform-tools,tools"
     - echo y | android update sdk --no-ui --filter "android-23,build-tools-23.0.1"
 
