@@ -37,3 +37,5 @@ deployment:
     branch: init
     commands:
       - ./gradlew assembleRelease
+    post:
+      - cp -R /home/ubuntu/SampleCiAndroid/app/build/outputs/apk/* $CIRCLE_ARTIFACTS/apk
