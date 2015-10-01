@@ -33,3 +33,6 @@ deployment:
     commands:
       - ./gradlew assembleRelease
 #      - ./gradlew uploadDeployGateRelease
+  init:
+    commands:
+      - ./gradlew assembleRelease
