@@ -28,6 +28,7 @@ test:
     - ./gradlew check findbugsConvertSJis checkstyleReport
   post:
       - cp -R /home/ubuntu/SampleCiAndroid/build/reports/* $CIRCLE_ARTIFACTS
+      # デバッグのapkが出来てしまうので、削除
       - rm -rf /home/ubuntu/SampleCiAndroid/app/build/outputs/apk/*
 
 deployment:
