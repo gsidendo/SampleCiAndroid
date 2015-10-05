@@ -29,9 +29,10 @@ task checkstyle(type: Checkstyle) {
     if (project.hasProperty('checkStyleConfigFile')) {
         conf = file("${project.rootDir}/config/checkstyle/CheckStyle.xml")
     } else {
-        conf = File.createTempFile("checkstyle", "")
-        new URL("$RESOURCE_ROOT_PATH/config/checkstyle/$CHECK_STYLE_FILE_NM")
-                .withInputStream{ i -> conf.withOutputStream{ it << i }}
+        // TODO:現状privateリポジトリのファイルにはアクセス出来ない
+//        conf = File.createTempFile("checkstyle", "")
+//        new URL("$RESOURCE_ROOT_PATH/config/checkstyle/$CHECK_STYLE_FILE_NM")
+//                .withInputStream{ i -> conf.withOutputStream{ it << i }}
     }
     configFile conf
     source 'src/main'
@@ -72,9 +73,10 @@ task findbugs(type: FindBugs, dependsOn: assembleDebug) {
     if (project.hasProperty('findBugsExcludeFilter')) {
         conf = file(findBugsExcludeFilter)
     } else {
-        conf = File.createTempFile("findbugs", "")
-        new URL("$RESOURCE_ROOT_PATH/config/findbugs/$FIND_BUGS_FILE_NM")
-                .withInputStream{ i -> conf.withOutputStream{ it << i }}
+        // TODO:現状privateリポジトリのファイルにはアクセス出来ない
+//        conf = File.createTempFile("findbugs", "")
+//        new URL("$RESOURCE_ROOT_PATH/config/findbugs/$FIND_BUGS_FILE_NM")
+//                .withInputStream{ i -> conf.withOutputStream{ it << i }}
     }
     excludeFilter = conf
     classes = files("$project.buildDir/intermediates/classes/")
